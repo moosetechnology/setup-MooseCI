@@ -1,0 +1,26 @@
+name: 'Setup MooseCI'
+description: 'Setup MooseCI for your repository'
+
+inputs:
+  report-path:
+    description: Directory (relative to the analyzed project) where the report files are written
+    required: false
+    default: .moose-ci/report
+
+runs:
+  using: composite
+  steps:
+    - name: 'Run MooseCI'
+      shell: bash
+      run: |
+        docker run \
+          -v "$GITHUB_WORKSPACE:/src" \
+          ghcr.io/moosetechnology/moose-ci:latest \ 
+          analyze
+    
+    - name: 'Upload report'
+      uses: actions/upload-artifacts@v4
+      with:
+        name: moose-ci-report
+        path: ${{ inputs.report-path }}/report*.json
+        if-no-files-found: error 
