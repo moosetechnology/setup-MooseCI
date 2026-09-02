@@ -1,0 +1,26 @@
+MooseCIConfig {
+	#projectPath : '/Users/toky/projects/setup-MooseCI/test-fixture',
+	#projectLanguage : #python,
+	#metrics : [
+		#size,
+		#complexity
+	],
+	#rules : [
+		#long_file : 1000,
+		#no_docstring,
+		#too_many_parameters : 10,
+		#large_class : 20,
+		#local_var_naming,
+		#unused_local_variable,
+		#unused_parameter,
+		#unused_private_method,
+		#shadowed_attribute,
+		#function_naming
+	],
+	#outputFormats : [
+		#json
+	],
+	#outputPath : '.moose-ci/report',
+	#visualizations : [ ],
+	#isRemote : false
+}
