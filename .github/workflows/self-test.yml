@@ -10,8 +10,12 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: ./
+              with:
+                project-path: test-fixture
+                report-path: test-fixture/.moose-ci/report
             - uses: actions/download-artifact@v4
               with:
                 name: moose-ci-report
             - name: 'Check report exists'
-              run: tets -f moose-ci-report/report*.json
+              working-directory: .
+              run: test -f moose-ci-report/report*.json

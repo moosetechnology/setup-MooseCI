@@ -2,6 +2,10 @@ name: 'Setup MooseCI'
 description: 'Setup MooseCI for your repository'
 
 inputs:
+  project-path:
+    description: Path (relative to the workspace) of the project to analyze
+    required: false
+    default: .
   report-path:
     description: Directory (relative to the analyzed project) where the report files are written
     required: false
@@ -12,7 +16,7 @@ runs:
   steps:
     - name: 'Run MooseCI'
       shell: bash
-      run: docker run -v "$GITHUB_WORKSPACE:/src" ghcr.io/moosetechnology/moose-ci:latest analyze
+      run: docker run -v "$GITHUB_WORKSPACE/${{ inputs.project-path }}:/src" ghcr.io/moosetechnology/moose-ci:latest analyze
     
     - name: 'Upload report'
       uses: actions/upload-artifact@v4
