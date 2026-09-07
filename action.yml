@@ -26,6 +26,6 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: moose-ci-report
-        path: "$GITHUB_WORKSPACE/${{ inputs.project-path }}/.moose-ci/report/report*.json"
+        path: "${{ inputs.project-path }}/.moose-ci/report/report*.json"
         if-no-files-found: error 
       
