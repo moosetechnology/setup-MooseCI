@@ -1,5 +1,5 @@
-name: 'Self test'
-on: [push, pull_request]
+name: 'Self test MooseCI'
+on: push
 
 jobs:
     test:
@@ -12,7 +12,6 @@ jobs:
             - uses: ./
               with:
                 project-path: test-fixture
-                report-path: test-fixture/.moose-ci/report
             - uses: actions/download-artifact@v4
               with:
                 name: moose-ci-report
