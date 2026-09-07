@@ -6,7 +6,7 @@ A GitHub Action that runs a [MooseCI](https://github.com/moosetechnology/MooseCI
 
 ```yaml
 name: MooseCI
-on: [push, pull_request]
+on: push
 jobs:
   analyze:
     runs-on: ubuntu-latest
