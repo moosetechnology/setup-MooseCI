@@ -16,6 +16,8 @@ jobs:
             - uses: actions/download-artifact@v4
               with:
                 name: moose-ci-report
+            - name: Display structure of downloaded files
+              run: ls -R
             - name: 'Check report exists'
               working-directory: .
-              run: test -f moose-ci-report/report*.json
+              run: test -f test-fixture/.moose-ci/report/report*.json
