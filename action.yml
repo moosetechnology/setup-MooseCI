@@ -14,11 +14,13 @@ runs:
       shell: bash
       run: |
         cd "$GITHUB_WORKSPACE/${{ inputs.project-path }}"
+        pwd
         docker run -v ".:/src" ghcr.io/moosetechnology/moose-ci:latest analyze
     
-    - name: 'Upload report'
+    - name: 'Upload report as artifact'
       uses: actions/upload-artifact@v4
       with:
         name: moose-ci-report
         path: "$GITHUB_WORKSPACE/${{ inputs.project-path }}/.moose-ci/report/report*.json"
         if-no-files-found: error 
+      
