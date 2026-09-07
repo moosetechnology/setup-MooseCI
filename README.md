@@ -18,7 +18,6 @@ jobs:
 ## Inputs
 
 - `project-path`: the folder to analyze, relative to the workspace. Default: `.`
-- `report-path`: where the report files are written, relative to the analyzed project. Default: `.moose-ci/report`
 
 ## Requirements
 
