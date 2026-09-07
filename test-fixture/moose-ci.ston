@@ -1,5 +1,4 @@
 MooseCIConfig {
-	#projectPath : '/Users/toky/projects/setup-MooseCI/test-fixture',
 	#projectLanguage : #python,
 	#metrics : [
 		#size,
