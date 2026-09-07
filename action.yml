@@ -6,21 +6,19 @@ inputs:
     description: Path (relative to the workspace) of the project to analyze
     required: false
     default: .
-  report-path:
-    description: Directory (relative to the analyzed project) where the report files are written
-    required: false
-    default: .moose-ci/report
 
 runs:
   using: composite
   steps:
     - name: 'Run MooseCI'
       shell: bash
-      run: docker run -v "$GITHUB_WORKSPACE/${{ inputs.project-path }}:/src" ghcr.io/moosetechnology/moose-ci:latest analyze
+      run: |
+        cd "$GITHUB_WORKSPACE/${{ inputs.project-path }}"
+        docker run -v ".:/src" ghcr.io/moosetechnology/moose-ci:latest analyze
     
     - name: 'Upload report'
       uses: actions/upload-artifact@v4
       with:
         name: moose-ci-report
-        path: ${{ inputs.report-path }}/report*.json
+        path: "$GITHUB_WORKSPACE/${{ inputs.project-path }}/.moose-ci/report/report*.json"
         if-no-files-found: error 
