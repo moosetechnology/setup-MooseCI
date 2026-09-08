@@ -37,6 +37,7 @@ runs:
         PR_NUMBER="${{ github.event.pull_request.number }}"
         ARTIFACT_ID=$(gh api "/repos/$REPO/actions/runs/$RUN_ID/artifacts" \
           --jq '.artifacts[] | select(.name == "moose-ci-report") | .id' | head -1)
+        gh pr comment "$PR_NUMBER" --body "MooseCI report:"
         if [ -n "$ARTIFACT_ID" ]; then
           gh pr comment "$PR_NUMBER" \
             --body "MooseCI report: https://github.com/$REPO/actions/runs/$RUN_ID/artifacts/$ARTIFACT_ID"
