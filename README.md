@@ -6,7 +6,11 @@ A GitHub Action that runs a [MooseCI](https://github.com/moosetechnology/MooseCI
 
 ```yaml
 name: MooseCI
-on: push
+on: [push, pull_request]
+permissions:
+  contents: read
+  actions: write
+  pull-requests: write
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -15,9 +19,12 @@ jobs:
       - uses: moosetechnology/setup-MooseCI@main
 ```
 
+The `actions: write` permission is needed to upload the report artifact. The `pull-requests: write` permission is needed to comment the report link on pull requests.
+
 ## Inputs
 
 - `project-path`: the folder to analyze, relative to the workspace. Default: `.`
+- `comment-on-pr`: comment the report artifact link on pull requests. Default: `true`
 
 ## Requirements
 
@@ -36,3 +43,7 @@ The action runs MooseCI in a Docker container. It mounts your project folder ins
 ## Artifact
 
 The report files (named `report-*.json`) are uploaded as a single artifact called `moose-ci-report`. You can download it from the workflow run.
+
+## Pull request comment
+
+By default, the action comments the report artifact link on pull requests. You can turn this off with `comment-on-pr: false`. The comment step never fails the workflow.

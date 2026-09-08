@@ -6,6 +6,10 @@ inputs:
     description: Path (relative to the workspace) of the project to analyze
     required: false
     default: .
+  comment-on-pr:
+    description: Comment the report artifact link on pull requests
+    required: false
+    default: "true"
 
 runs:
   using: composite
@@ -21,5 +25,20 @@ runs:
       with:
         name: moose-ci-report
         path: "${{ inputs.project-path }}/.moose-ci/report/report*.json"
-        if-no-files-found: error 
+        if-no-files-found: error
+
+    - name: 'Comment report link on pull request'
+      if: inputs.comment-on-pr == 'true' && github.event_name == 'pull_request'
+      shell: bash
+      continue-on-error: true
+      run: |
+        REPO="${{ github.repository }}"
+        RUN_ID="${{ github.run_id }}"
+        PR_NUMBER="${{ github.event.pull_request.number }}"
+        ARTIFACT_ID=$(gh api "/repos/$REPO/actions/runs/$RUN_ID/artifacts" \
+          --jq '.artifacts[] | select(.name == "moose-ci-report") | .id' | head -1)
+        if [ -n "$ARTIFACT_ID" ]; then
+          gh pr comment "$PR_NUMBER" \
+            --body "MooseCI report: https://github.com/$REPO/actions/runs/$RUN_ID/artifacts/$ARTIFACT_ID"
+        fi 
       
