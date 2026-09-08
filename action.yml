@@ -6,6 +6,10 @@ inputs:
     description: Path (relative to the workspace) of the project to analyze
     required: false
     default: .
+  comment-on-pr:
+    description: Comment the report artifact link on pull requests
+    required: false
+    default: "true"
 
 runs:
   using: composite
@@ -21,5 +25,13 @@ runs:
       with:
         name: moose-ci-report
         path: "${{ inputs.project-path }}/.moose-ci/report/report*.json"
-        if-no-files-found: error 
+        if-no-files-found: error
+
+    - name: 'Comment report link on pull request'
+      if: ${{ inputs.comment-on-pr == 'true' && github.event_name == 'pull_request' }}
+      uses: mshick/add-pr-comment@v3
+      with:
+        message: |
+          MooseCI report is available as an artifact of this workflow run. You can download it [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}). 
+          
       
