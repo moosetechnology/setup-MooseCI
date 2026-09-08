@@ -28,7 +28,6 @@ runs:
         if-no-files-found: error
 
     - name: 'Comment report link on pull request'
-      if: inputs.comment-on-pr == 'true' && github.event_name == 'pull_request'
       shell: bash
       continue-on-error: true
       run: |
