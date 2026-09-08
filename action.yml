@@ -28,17 +28,8 @@ runs:
         if-no-files-found: error
 
     - name: 'Comment report link on pull request'
-      shell: bash
-      continue-on-error: true
-      run: |
-        REPO="${{ github.repository }}"
-        RUN_ID="${{ github.run_id }}"
-        PR_NUMBER="${{ github.event.pull_request.number }}"
-        ARTIFACT_ID=$(gh api "/repos/$REPO/actions/runs/$RUN_ID/artifacts" \
-          --jq '.artifacts[] | select(.name == "moose-ci-report") | .id' | head -1)
-        gh pr comment "$PR_NUMBER" --body "MooseCI report:"
-        if [ -n "$ARTIFACT_ID" ]; then
-          gh pr comment "$PR_NUMBER" \
-            --body "MooseCI report: https://github.com/$REPO/actions/runs/$RUN_ID/artifacts/$ARTIFACT_ID"
-        fi 
+      uses: mshick/add-pr-comment@v3
+      with:
+        message: |
+          MooseCI report is available as an artifact of this workflow run. You can download it [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
       
