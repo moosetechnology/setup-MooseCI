@@ -75,6 +75,6 @@ By default, the action comments on pull requests with:
 - the report download URL
 - the analysis summary (metrics and quality results)
 
-![Pull request comment](pr-comment.png)
+![Pull request comment](pr-comment.jpg)
 
 You can turn this off with `comment-on-pr: false`. The comment step never fails the workflow.
