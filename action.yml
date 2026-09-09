@@ -32,6 +32,7 @@ runs:
       shell: bash
       run: |
         RUN_ID="${{ github.run_id }}"
+        GH_TOKEN="${{ github.token }}"
         ARTIFACT_ID=$(gh api "/repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts" \
           --jq '.artifacts[] | select(.name == "moose-ci-report") | .id' | head -1)
         if [ -n "$ARTIFACT_ID" ]; then
