@@ -27,11 +27,26 @@ runs:
         path: "${{ inputs.project-path }}/.moose-ci/report/report*.json"
         if-no-files-found: error
 
+    - name: 'Get report download URL'
+      id: artifact
+      shell: bash
+      run: |
+        RUN_ID="${{ github.run_id }}"
+        ARTIFACT_ID=$(gh api "/repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts" \
+          --jq '.artifacts[] | select(.name == "moose-ci-report") | .id' | head -1)
+        if [ -n "$ARTIFACT_ID" ]; then
+          echo "url=${{ github.server_url }}/${{ github.repository }}/actions/runs/$RUN_ID/artifacts/$ARTIFACT_ID/zip" >> "$GITHUB_OUTPUT"
+        else
+          echo "url=${{ github.server_url }}/${{ github.repository }}/actions/runs/$RUN_ID" >> "$GITHUB_OUTPUT"
+        fi
+
     - name: 'Comment report link on pull request'
       if: ${{ inputs.comment-on-pr == 'true' && github.event_name == 'pull_request' }}
       uses: mshick/add-pr-comment@v3
       with:
         message: |
-          MooseCI report is available as an artifact of this workflow run. You can download it [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}). 
+          ## MooseCI report: 
+          - [download report](${{ steps.artifact.outputs.url }}) 
+        attach-path: ${{ steps.artifact.outputs.url }}
           
       
