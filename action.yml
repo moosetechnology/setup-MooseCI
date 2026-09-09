@@ -17,8 +17,9 @@ runs:
     - name: 'Run MooseCI'
       shell: bash
       run: |
+        set -o pipefail
         cd "$GITHUB_WORKSPACE/${{ inputs.project-path }}"
-        docker run -v ".:/src" ghcr.io/moosetechnology/moose-ci:latest analyze
+        docker run -v ".:/src" ghcr.io/moosetechnology/moose-ci:latest analyze | tee analysis.log
     
     - name: 'Upload report as artifact'
       uses: actions/upload-artifact@v4
@@ -26,6 +27,16 @@ runs:
         name: moose-ci-report
         path: "${{ inputs.project-path }}/.moose-ci/report/report*.json"
         if-no-files-found: error
+
+    - name: 'Get analysis log'
+      id: analysis-log
+      shell: bash
+      run: |
+        cd "$GITHUB_WORKSPACE/${{ inputs.project-path }}"
+        LOG=$(sed -n '/Metrics/,$p' analysis.log | perl -pe 's/\e\[[0-9;]*m//g')
+        echo "moose_ci_log<<MOOSECI_EOF" >> "$GITHUB_OUTPUT"
+        echo "$LOG" >> "$GITHUB_OUTPUT"
+        echo "MOOSECI_EOF" >> "$GITHUB_OUTPUT"
 
     - name: 'Get report download URL'
       id: artifact
@@ -49,5 +60,9 @@ runs:
         message: |
           ## MooseCI report: 
           - [download report](${{ steps.artifact.outputs.url }}) 
-          
+          ## Analysis log:
+          ```
+          ${{ steps.analysis-log.outputs.moose_ci_log }}
+          ``` 
+
       
