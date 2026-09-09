@@ -37,7 +37,7 @@ runs:
         ARTIFACT_ID=$(gh api "/repos/${{ github.repository }}/actions/runs/$RUN_ID/artifacts" \
           --jq '.artifacts[] | select(.name == "moose-ci-report") | .id' | head -1)
         if [ -n "$ARTIFACT_ID" ]; then
-          echo "url=${{ github.server_url }}/${{ github.repository }}/actions/runs/$RUN_ID/artifacts/$ARTIFACT_ID/zip" >> "$GITHUB_OUTPUT"
+          echo "url=${{ github.server_url }}/${{ github.repository }}/actions/runs/$RUN_ID/artifacts/$ARTIFACT_ID" >> "$GITHUB_OUTPUT"
         else
           echo "url=${{ github.server_url }}/${{ github.repository }}/actions/runs/$RUN_ID" >> "$GITHUB_OUTPUT"
         fi
@@ -49,6 +49,5 @@ runs:
         message: |
           ## MooseCI report: 
           - [download report](${{ steps.artifact.outputs.url }}) 
-        attach-path: ${{ steps.artifact.outputs.url }}
           
       
