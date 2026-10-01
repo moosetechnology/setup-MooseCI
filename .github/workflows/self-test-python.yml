@@ -1,5 +1,5 @@
-name: 'Self test MooseCI'
-on: pull_request
+name: 'Self test MooseCI (Python)'
+on: [push, pull_request]
 
 jobs:
     test:
@@ -12,11 +12,11 @@ jobs:
             - uses: actions/checkout@v4
             - uses: ./
               with:
-                project-path: test-fixture
+                project-path: test-fixture-python
                 project-language: python
             - uses: actions/download-artifact@v4
               with:
                 name: moose-ci-report
             - name: 'Check report exists'
               working-directory: .
-              run: test -f test-fixture/.moose-ci/report/report*.json
+              run: test -f test-fixture-python/.moose-ci/report/report*.json

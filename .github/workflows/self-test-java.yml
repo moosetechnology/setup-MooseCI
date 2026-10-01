@@ -1,0 +1,22 @@
+name: 'Self test MooseCI (Java)'
+on: [push, pull_request]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            actions: write
+            pull-requests: write
+        steps:
+            - uses: actions/checkout@v4
+            - uses: ./
+              with:
+                project-path: test-fixture-java
+                project-language: java
+            - uses: actions/download-artifact@v4
+              with:
+                name: moose-ci-report
+            - name: 'Check report exists'
+              working-directory: .
+              run: test -f test-fixture-java/.moose-ci/report/report*.json
