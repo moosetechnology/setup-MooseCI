@@ -17,6 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: moosetechnology/setup-MooseCI@main
+        with:
+          project-language: java
 ```
 
 The `actions: write` permission is needed to upload the report artifact. The `pull-requests: write` permission is needed to comment the report link on pull requests.
@@ -41,11 +43,13 @@ jobs:
       - uses: moosetechnology/setup-MooseCI@main
         with:
           project-path: tslearn
+          project-language: python
 ```
 
 ## Inputs
 
 - `project-path`: the folder to analyze, relative to the workspace. Default: `.`
+- `project-language` (required): language of the project to analyze. It selects the Docker image: `java` uses `ghcr.io/moosetechnology/moose-ci:latest` (the base image, which includes Java), `python` uses `ghcr.io/moosetechnology/moose-ci:python`.
 - `comment-on-pr`: comment the report artifact link on pull requests. Default: `true`
 
 ## Requirements

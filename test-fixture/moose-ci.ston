@@ -1,8 +1,8 @@
 MooseCIConfig {
 	#projectLanguage : #python,
 	#metrics : [
-		#size,
-		#complexity
+		#files,
+		#loc
 	],
 	#rules : [
 		#long_file : 1000,

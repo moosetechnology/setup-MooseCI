@@ -10,6 +10,9 @@ inputs:
     description: Comment the report artifact link on pull requests
     required: false
     default: "true"
+  project-language:
+    description: 'Language of the project to analyze (e.g. java, python). Selects the MooseCI Docker image.'
+    required: true
 
 runs:
   using: composite
@@ -19,7 +22,11 @@ runs:
       run: |
         set -o pipefail
         cd "$GITHUB_WORKSPACE/${{ inputs.project-path }}"
-        docker run -v ".:/src" ghcr.io/moosetechnology/moose-ci:latest analyze | tee analysis.log
+        case "${{ inputs.project-language }}" in
+          java) IMAGE_TAG="latest" ;;
+          *)    IMAGE_TAG="${{ inputs.project-language }}" ;;
+        esac
+        docker run -v ".:/src" "ghcr.io/moosetechnology/moose-ci:${IMAGE_TAG}" analyze | tee analysis.log
     
     - name: 'Upload report as artifact'
       uses: actions/upload-artifact@v4
