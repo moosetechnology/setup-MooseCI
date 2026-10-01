@@ -81,4 +81,6 @@ By default, the action comments on pull requests with:
 
 ![Pull request comment](img/pr-comment.jpg)
 
+The action posts one comment per language: it uses `project-language` as the comment identifier, so a Java and a Python run each get their own comment. On every push, the comment is updated in place with the latest report.
+
 You can turn this off with `comment-on-pr: false`. The comment step never fails the workflow.
