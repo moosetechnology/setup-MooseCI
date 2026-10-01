@@ -1,7 +1,7 @@
 MooseCIConfig {
 	#projectLanguage : #python,
 	#metrics : [
-		#files
+		#files,
 		#loc
 	],
 	#rules : [
