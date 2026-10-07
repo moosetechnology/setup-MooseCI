@@ -13,6 +13,10 @@ inputs:
   project-language:
     description: 'Language of the project to analyze (e.g. java, python). Selects the MooseCI Docker image.'
     required: true
+  mooseci-version:
+    description: 'Version of the MooseCI Docker images to use (e.g. v0.1.0).'
+    required: false
+    default: v0.1.0
 
 runs:
   using: composite
@@ -23,8 +27,9 @@ runs:
         set -o pipefail
         cd "$GITHUB_WORKSPACE/${{ inputs.project-path }}"
         case "${{ inputs.project-language }}" in
-          java) IMAGE_TAG="latest" ;;
-          *)    IMAGE_TAG="${{ inputs.project-language }}" ;;
+          java)   IMAGE_TAG="${{ inputs.mooseci-version }}" ;;
+          python) IMAGE_TAG="${{ inputs.mooseci-version }}-python" ;;
+          *)      IMAGE_TAG="${{ inputs.project-language }}" ;;
         esac
         docker run -v ".:/src" "ghcr.io/moosetechnology/moose-ci:${IMAGE_TAG}" analyze | tee analysis.log
     

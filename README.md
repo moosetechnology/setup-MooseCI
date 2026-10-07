@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: moosetechnology/setup-MooseCI@main
+      - uses: moosetechnology/setup-MooseCI@v1
         with:
           project-language: java
 ```
@@ -40,7 +40,7 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - uses: moosetechnology/setup-MooseCI@main
+      - uses: moosetechnology/setup-MooseCI@v1
         with:
           project-path: tslearn
           project-language: python
@@ -49,7 +49,8 @@ jobs:
 ## Inputs
 
 - `project-path`: the folder to analyze, relative to the workspace. Default: `.`
-- `project-language` (required): language of the project to analyze. It selects the Docker image: `java` uses `ghcr.io/moosetechnology/moose-ci:latest` (the base image, which includes Java), `python` uses `ghcr.io/moosetechnology/moose-ci:python`.
+- `project-language` (required): language of the project to analyze. It selects the Docker image: `java` uses `ghcr.io/moosetechnology/moose-ci:<version>` (the base image, which includes Java), `python` uses `ghcr.io/moosetechnology/moose-ci:<version>-python`.
+- `mooseci-version`: version of the MooseCI Docker images to use. Default: `v0.1.0`
 - `comment-on-pr`: comment the report artifact link on pull requests. Default: `true`
 
 ## Requirements
