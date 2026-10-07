@@ -1,0 +1,20 @@
+name: release
+on:
+  release:
+    types: [published]
+permissions:
+  contents: write
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Move major tag
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          MAJOR="${TAG%%.*}"          # v1.0.0 -> v1
+          git tag -fa "$MAJOR" "$TAG" -m "$MAJOR"
+          git push origin "$MAJOR" --force
