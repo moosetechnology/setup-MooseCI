@@ -17,6 +17,11 @@ jobs:
             - uses: actions/download-artifact@v4
               with:
                 name: moose-ci-report
-            - name: 'Check report exists'
-              working-directory: .
-              run: test -f test-fixture-java/.moose-ci/report/report*.json
+                path: downloaded-report
+            - name: 'Check JSON and HTML reports are in the artifact'
+              run: |
+                test -f downloaded-report/report-*.json
+                test -f downloaded-report/report-*.html
+            - name: 'Check architecture violation is reported'
+              run: |
+                jq -e '.violations[] | select(.category == "architecture" and .rule == "ui cannot dependOn infra" and .count > 0)' downloaded-report/report-*.json

@@ -72,7 +72,7 @@ The action runs MooseCI in a Docker container. It mounts your project folder ins
 
 ## Artifact
 
-The report files (named `report-*.json`) are uploaded as a single artifact called `moose-ci-report`. You can download it from the workflow run.
+The report files (`report-*.json`, and `report-*.html` when `#html` is in the `#outputFormats` of `moose-ci.ston`) are uploaded as a single artifact called `moose-ci-report`. You can download it from the workflow run.
 
 ## Pull request comment
 
