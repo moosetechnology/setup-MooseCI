@@ -68,11 +68,15 @@ The project language must be supported by MooseCI:
 
 ## How it works
 
-The action runs MooseCI in a Docker container. It mounts your project folder inside the container at `/src`. MooseCI analyzes the current working directory and writes the report. The action then uploads the report files as an artifact named `moose-ci-report`.
+The action runs MooseCI in a Docker container. It mounts your project folder inside the container at `/src`. MooseCI analyzes the current working directory and writes the report. The action then uploads the report folder as an artifact named `moose-ci-report`.
 
 ## Artifact
 
-The report files (`report-*.json`, and `report-*.html` when `#html` is in the `#outputFormats` of `moose-ci.ston`) are uploaded as a single artifact called `moose-ci-report`. You can download it from the workflow run.
+Everything MooseCI writes to `.moose-ci/report/` is uploaded as a single artifact called `moose-ci-report`. You can download it from the workflow run. It contains:
+
+- `report-*.json`: the JSON report;
+- `report-*.html`: the HTML report, when `#html` is in the `#outputFormats` of `moose-ci.ston`;
+- `visualizations/*.svg`: the [visualizations](https://modularmoose.org/MooseCI/#/configuration?id=visualizations), when `#visualizations` is set in `moose-ci.ston`.
 
 ## Pull request comment
 
